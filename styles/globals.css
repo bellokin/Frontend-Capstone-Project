@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --black:      #0A0A08;
+  --ink:        #111110;
+  --card:       #161614;
+  --border:     #252522;
+  --border-hi:  #383832;
+  --gold:       #D4A853;
+  --gold-dim:   #8A6B2E;
+  --gold-glow:  rgba(212,168,83,0.12);
+  --gold-ring:  rgba(212,168,83,0.25);
+  --cream:      #F5F0E8;
+  --muted:      #65655A;
+  --muted-hi:   #8A8A7E;
+  --white:      #FAFAF6;
+  --red:        #E05555;
+  --green:      #5CB85C;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+/* ── Typography ────────────────────────────────────────────── */
+.font-display { font-family: 'Cormorant Garamond', serif; }
+
+/* ── Keyframes ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.94) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.45); }
+  100% { transform: scale(1); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Utility Classes ───────────────────────────────────────── */
+.animate-fade-up  { animation: fadeUp 0.55s cubic-bezier(0.23,1,0.32,1) both; }
+.animate-fade-in  { animation: fadeIn 0.35s ease both; }
+.animate-modal-in { animation: modalIn 0.4s cubic-bezier(0.23,1,0.32,1) both; }
+.animate-slide-in { animation: slideInRight 0.4s cubic-bezier(0.23,1,0.32,1) both; }
+.animate-toast-in { animation: toastIn 0.35s cubic-bezier(0.23,1,0.32,1) both; }
+.animate-heart    { animation: heartPop 0.3s ease; }
+
+/* ── Component Classes ─────────────────────────────────────── */
+
+/* Buttons */
+.btn-gold {
+  background: var(--gold);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-gold:hover {
+  background: #E8C06A;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(212,168,83,0.28);
+}
+.btn-gold:active { transform: translateY(0); }
+.btn-gold:disabled {
+  background: #1C2A1C;
+  color: var(--green);
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted-hi);
+  border: 1px solid var(--border);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 11px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-ghost:hover {
+  color: var(--white);
+  border-color: var(--border-hi);
+  background: rgba(255,255,255,0.04);
+}
+
+.btn-icon {
+  background: rgba(10,10,8,0.65);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted-hi);
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.btn-icon:hover { background: rgba(40,40,36,0.9); color: var(--white); }
+.btn-icon.loved {
+  color: var(--red);
+  border-color: rgba(224,85,85,0.3);
+  background: rgba(224,85,85,0.1);
+  animation: heartPop 0.3s ease;
+}
+
+/* Input */
+.input-base {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+.input-base::placeholder { color: var(--muted); }
+.input-base:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+  background: #181816;
+}
+
+/* Filter chips */
+.chip {
+  border: 1px solid var(--border);
+  color: var(--muted-hi);
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.18s;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.chip:hover { color: var(--white); border-color: var(--border-hi); background: rgba(255,255,255,0.04); }
+.chip.active {
+  background: var(--gold);
+  color: var(--black);
+  border-color: var(--gold);
+  font-weight: 600;
+}
+
+/* Section label */
+.section-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Cards base */
+.surface {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+/* Status badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.status-badge.pending {
+  color: var(--green);
+  background: rgba(92,184,92,0.1);
+  border: 1px solid rgba(92,184,92,0.2);
+}
+.status-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s ease infinite;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card);
+  border: 1px solid rgba(212,168,83,0.2);
+  color: var(--white);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  padding: 13px 22px;
+  border-radius: 100px;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
+.toast-icon { color: var(--gold); }
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,5,4,0.82);
+  backdrop-filter: blur(10px);
+  z-index: 400;
+}
