@@ -1,14 +1,32 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 
 const AppContext = createContext(null);
 
+function loadFromStorage(key, fallback) {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveToStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {}
+}
+
 export function AppProvider({ children }) {
-  const [favorites, setFavorites] = useState([]);
-  const [applications, setApplications] = useState([]);
+  const [favorites, setFavorites] = useState(() => loadFromStorage("pet_favorites", []));
+  const [applications, setApplications] = useState(() => loadFromStorage("pet_applications", []));
   const [search, setSearch] = useState("");
   const [activeType, setActiveType] = useState("");
   const [activeBreed, setActiveBreed] = useState("");
   const [toast, setToast] = useState(null);
+
+  useEffect(() => saveToStorage("pet_favorites", favorites), [favorites]);
+  useEffect(() => saveToStorage("pet_applications", applications), [applications]);
 
   const showToast = useCallback((message, icon = "✓") => {
     setToast({ message, icon });
@@ -19,12 +37,10 @@ export function AppProvider({ children }) {
     (id) => favorites.some((f) => f.id === id),
     [favorites]
   );
-
   const isApplied = useCallback(
     (id) => applications.some((a) => a.id === id),
     [applications]
   );
-
   const toggleFavorite = useCallback(
     (pet) => {
       setFavorites((prev) => {
@@ -39,7 +55,6 @@ export function AppProvider({ children }) {
     },
     [showToast]
   );
-
   const applyToAdopt = useCallback(
     (pet) => {
       setApplications((prev) => {
@@ -50,7 +65,6 @@ export function AppProvider({ children }) {
     },
     [showToast]
   );
-
   const withdrawApplication = useCallback(
     (pet) => {
       setApplications((prev) => prev.filter((a) => a.id !== pet.id));
@@ -58,7 +72,6 @@ export function AppProvider({ children }) {
     },
     [showToast]
   );
-
   const clearFilters = useCallback(() => {
     setSearch("");
     setActiveType("");
